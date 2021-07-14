@@ -14,6 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
   late List popularAlbums;
+  late List musicAlbums;
   late ScrollController _scrollController;
   late TabController _tabController;
 
@@ -27,6 +28,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         _scrollController=ScrollController();
       });
     } );
+     await  DefaultAssetBundle.of(context).loadString(
+         "assets/json/musicAlbums.json").
+     then((s){
+       setState(() {
+         musicAlbums= json.decode(s);
+
+       });
+     } );
   }
   @override
   void initState(){
@@ -135,14 +144,84 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 body: TabBarView(
                   controller: _tabController,
                     children: [
-                  Material(
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.grey,
-                      ),
-                      title: Text("Content"),
-                    ),
-                  ),
+                      ListView.builder(
+                        itemCount: musicAlbums==null?0:musicAlbums.length,
+                          itemBuilder: (_,i){
+                        return Container(
+                          margin: const EdgeInsets.only(
+                              left: 20,right: 20,top: 10,bottom: 10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppColors.tabVarViewColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 2,
+                                  offset: Offset(0,0),
+                                    color:Colors.grey.withOpacity(0.2)
+                                )
+                              ]
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 90,
+                                    height: 120,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                        image: DecorationImage(
+                                            image: AssetImage(musicAlbums[i]["img"]))
+                                      )
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(Icons.star,size: 24,color: AppColors.startColor,),
+                                          SizedBox(width: 5,),
+                                          Text(musicAlbums[i]["rating"],style: TextStyle(
+                                            color: AppColors.menu2Color
+                                          ),)
+                                        ],
+                                      ),
+                                      Text(musicAlbums[i]["title"],style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: "monoscope",
+                                        fontWeight: FontWeight.bold
+                                      ),),
+                                      Text(musicAlbums[i]["text"],style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: "monoscope",
+                                        color: AppColors.subTitleColor
+                                      ),),
+                                      Container(
+                                        height:20 ,
+                                        width: 60,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: AppColors.loveColor
+                                        ),
+                                        child: Text("Love",style: TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: "monoscope",
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold
+                                        ),
+                                        ),
+                                        alignment: Alignment.center,
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                   Material(
                     child: ListTile(
                       leading: CircleAvatar(
