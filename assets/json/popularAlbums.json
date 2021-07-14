@@ -1,0 +1,37 @@
+[
+  {
+    "rating":"4.5",
+    "title":"Music-1",
+    "text":"AR Rahaman",
+    "img":"assets/imgs/arr-1.png",
+    "audio":""
+  },
+  {
+    "rating":"4.4",
+    "title":"Music-2",
+    "text":"AR Rahaman",
+    "img":"assets/imgs/arr-2.jpg",
+    "audio":""
+  },
+  {
+    "rating":"4.4",
+    "title":"Music-3",
+    "text":"AR Rahaman",
+    "img":"assets/imgs/arr-3.jpg",
+    "audio":""
+  },
+  {
+    "rating":"4.3",
+    "title":"Music-4",
+    "text":"AR Rahaman",
+    "img":"assets/imgs/arr-4.jpeg",
+    "audio":""
+  },
+  {
+    "rating":"4.3",
+    "title":"Music-5",
+    "text":"AR Rahaman",
+    "img":"assets/imgs/arr-5.jpeg",
+    "audio":""
+  }
+]
