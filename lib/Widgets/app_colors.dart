@@ -9,5 +9,6 @@ final Color tabVarViewColor=Color(0xFFfdfdfd);
 final Color startColor=Color(0xFFfdc746);
 final Color subTitleColor=Color(0xFFc5c4ca);
 final Color loveColor=Color(0xFF00ace6);
-final Color audioBlueBackground=Color(0xFFeeeffa);
+final Color audioBluishBackground=Color(0xFFeeeffa);
+final Color audioBlueBackground=Color(0xFF04abe7);
 final Color audioGreyBackground=Color(0xFFf2f2f2);

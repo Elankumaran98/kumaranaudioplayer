@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kumaranaudioplayer/Pages/HomePage.dart';
+import 'package:kumaranaudioplayer/Pages/audio_page.dart';
 
 
 void main()=>runApp(MaterialApp(
@@ -13,6 +14,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HomePage();
+    return AudioPage();
   }
 }
