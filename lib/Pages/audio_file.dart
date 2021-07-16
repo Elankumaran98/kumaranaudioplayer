@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class AudioFile extends StatefulWidget {
   final AudioPlayer audioPlayer;
-  const AudioFile({Key? key,required this.audioPlayer}) : super(key: key);
+  final String audioPath;
+  const AudioFile({Key? key,required this.audioPlayer,required this.audioPath}) : super(key: key);
   @override
   _AudioFileState createState() => _AudioFileState();
 }
@@ -11,10 +12,10 @@ class AudioFile extends StatefulWidget {
 class _AudioFileState extends State<AudioFile> {
   Duration _duration=new Duration();
   Duration _position=new Duration();
-  final String path="https://st.bslmeiyu.com/uploads/%e6%9c%97%e6%96%87%e5%9b%bd%e9%99%85SBS%e7%b3%bb%e5%88%97/%e6%9c%97%e6%96%87%e5%9b%bd%e9%99%85%e8%8b%b1%e8%af%ad%e6%95%99%e7%a8%8b%e7%ac%ac1%e5%86%8c_V2/%e5%ad%a6%e7%94%9f%e7%94%a8%e4%b9%a6/P149_Chapter%2016_Vocabulary%20Preview.mp3";
   bool isPlaying=false;
   bool isPaused=false;
-  bool isLoop=false;
+  bool isRepeat=false;
+  Color _color=Colors.black;
   List<IconData> _icons=[
     Icons.play_circle_filled,
     Icons.pause_circle_filled
@@ -31,17 +32,29 @@ class _AudioFileState extends State<AudioFile> {
         _position=p;
     }); });
 
-    this.widget.audioPlayer.setUrl(path);
+    this.widget.audioPlayer.onPlayerCompletion.listen((event) {
+      setState(() {
+        _position=Duration(seconds: 0);
+        if(isRepeat==true){
+          isPlaying=true;
+        }
+        isPlaying=false;
+        isRepeat=false;
+      });
+    });
+
+    this.widget.audioPlayer.setUrl(this.widget.audioPath);
   }
   
   
   Widget btnStart(){
     return IconButton(
       padding: const EdgeInsets.only(bottom: 10),
-        icon: isPlaying==false? Icon(_icons[0]):Icon(_icons[1]),
+        icon: isPlaying==false? Icon(_icons[0],size: 50,color: Colors.blue,)
+            :Icon(_icons[1],size: 50,color: Colors.red,),
       onPressed: (){
         if(isPlaying==false){
-          this.widget.audioPlayer.play(path);
+          this.widget.audioPlayer.play(this.widget.audioPath);
           setState(() {
             isPlaying=true;
           });
@@ -56,16 +69,98 @@ class _AudioFileState extends State<AudioFile> {
       },);
   }
 
+  Widget btnLoop(){
+    return IconButton(
+        onPressed: (){
+          this.widget.audioPlayer.setPlaybackRate(playbackRate: 1.5);
+        },
+        icon: ImageIcon(
+          AssetImage("assets/imgs/loop.png"),
+          color: Colors.black,
+          size: 15,));
+  }
+
+  Widget btnFast(){
+    return IconButton(
+        onPressed: (){
+          this.widget.audioPlayer.setPlaybackRate(playbackRate: 1.5);
+        },
+        icon: ImageIcon(
+          AssetImage("assets/imgs/forward.png"),
+          color: Colors.black,
+          size: 15,));
+  }
+
+  Widget btnSlow(){
+    return IconButton(
+        onPressed: (){
+          this.widget.audioPlayer.setPlaybackRate(playbackRate: 0.5);
+        },
+        icon: ImageIcon(
+          AssetImage("assets/imgs/backword.png"),
+          color: Colors.black,
+          size: 15,));
+  }
+
+  Widget btnRepeat(){
+    return IconButton(
+        icon: ImageIcon(
+          AssetImage("assets/imgs/repeat.png"),
+          color: _color,
+          size: 15,),
+        onPressed: (){
+          if(isRepeat==false){
+            this.widget.audioPlayer.setReleaseMode(ReleaseMode.LOOP);
+            setState(() {
+              isRepeat=true;
+              _color: Colors.blue;
+            });
+          }
+          else if(isRepeat==true){
+            this.widget.audioPlayer.setReleaseMode(ReleaseMode.RELEASE);
+            _color=Colors.black;
+          }
+        },
+       );
+  }
+
+
   Widget loadAsset(){
     return Container(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          btnStart()
+          btnLoop(),
+          btnSlow(),
+          btnStart(),
+          btnFast(),
+          btnRepeat()
         ],
       ),
     );
+  }
+
+
+
+  Widget slider(){
+    return Slider(
+      activeColor: Colors.red,
+        inactiveColor: Colors.grey,
+        min: 0.0,
+        max: _duration.inSeconds.toDouble(),
+        value: _position.inSeconds.toDouble(),
+        onChanged: (double value){
+      setState(() {
+        changeToSecond(value.toInt());
+        value=value;
+      });
+    });
+  }
+
+  void changeToSecond(int second){
+    Duration newDuration=Duration(seconds: second);
+    this.widget.audioPlayer.seek(newDuration);
   }
 
   Widget build(BuildContext context) {
@@ -76,12 +171,18 @@ class _AudioFileState extends State<AudioFile> {
             padding: const EdgeInsets.only(left: 20,right: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [],
+              children: [
+                Text(_position.toString().split(".")[0],style: TextStyle(fontSize: 16),),
+                Text(_duration.toString().split(".")[0],style: TextStyle(fontSize: 16),),
+              ],
             ),
           ),
-          loadAsset()
+          slider(),
+          loadAsset(),
+
         ],
       ),
     );
   }
+
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:kumaranaudioplayer/Pages/audio_page.dart';
 import 'package:kumaranaudioplayer/Pages/my_tabs.dart';
 import 'package:kumaranaudioplayer/Widgets/app_colors.dart' as AppColors;
 
@@ -147,76 +148,82 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       ListView.builder(
                         itemCount: musicAlbums==null?0:musicAlbums.length,
                           itemBuilder: (_,i){
-                        return Container(
-                          margin: const EdgeInsets.only(
-                              left: 20,right: 20,top: 10,bottom: 10),
+                        return GestureDetector(
+                          onTap: (){
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context)=>AudioPage(musicData: musicAlbums,index:i)));
+                          },
                           child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColors.tabVarViewColor,
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 2,
-                                  offset: Offset(0,0),
-                                    color:Colors.grey.withOpacity(0.2)
-                                )
-                              ]
-                            ),
+                            margin: const EdgeInsets.only(
+                                left: 20,right: 20,top: 10,bottom: 10),
                             child: Container(
-                              padding: const EdgeInsets.all(8),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 90,
-                                    height: 120,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(
-                                            image: AssetImage(musicAlbums[i]["img"]))
-                                      )
-                                  ),
-                                  SizedBox(width: 10,),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(Icons.star,size: 24,color: AppColors.startColor,),
-                                          SizedBox(width: 5,),
-                                          Text(musicAlbums[i]["rating"],style: TextStyle(
-                                            color: AppColors.menu2Color
-                                          ),)
-                                        ],
-                                      ),
-                                      Text(musicAlbums[i]["title"],style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: "monoscope",
-                                        fontWeight: FontWeight.bold
-                                      ),),
-                                      Text(musicAlbums[i]["text"],style: TextStyle(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColors.tabVarViewColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 2,
+                                    offset: Offset(0,0),
+                                      color:Colors.grey.withOpacity(0.2)
+                                  )
+                                ]
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 90,
+                                      height: 120,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                              image: AssetImage(musicAlbums[i]["img"]))
+                                        )
+                                    ),
+                                    SizedBox(width: 10,),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(Icons.star,size: 24,color: AppColors.startColor,),
+                                            SizedBox(width: 5,),
+                                            Text(musicAlbums[i]["rating"],style: TextStyle(
+                                              color: AppColors.menu2Color
+                                            ),)
+                                          ],
+                                        ),
+                                        Text(musicAlbums[i]["title"],style: TextStyle(
                                           fontSize: 16,
                                           fontFamily: "monoscope",
-                                        color: AppColors.subTitleColor
-                                      ),),
-                                      Container(
-                                        height:20 ,
-                                        width: 60,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
-                                          color: AppColors.loveColor
-                                        ),
-                                        child: Text("Love",style: TextStyle(
-                                            fontSize: 12,
+                                          fontWeight: FontWeight.bold
+                                        ),),
+                                        Text(musicAlbums[i]["text"],style: TextStyle(
+                                            fontSize: 16,
                                             fontFamily: "monoscope",
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.bold
-                                        ),
-                                        ),
-                                        alignment: Alignment.center,
-                                      )
-                                    ],
-                                  )
-                                ],
+                                          color: AppColors.subTitleColor
+                                        ),),
+                                        Container(
+                                          height:20 ,
+                                          width: 60,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: AppColors.loveColor
+                                          ),
+                                          child: Text("Love",style: TextStyle(
+                                              fontSize: 12,
+                                              fontFamily: "monoscope",
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold
+                                          ),
+                                          ),
+                                          alignment: Alignment.center,
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),

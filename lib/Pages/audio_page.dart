@@ -6,7 +6,9 @@ import 'package:kumaranaudioplayer/Pages/audio_file.dart';
 
 
 class AudioPage extends StatefulWidget {
-  const AudioPage({Key? key}) : super(key: key);
+  final musicData;
+  final int index;
+  const AudioPage({Key? key,this.musicData,required this.index}) : super(key: key);
 
   @override
   _AudioPageState createState() => _AudioPageState();
@@ -43,7 +45,7 @@ class _AudioPageState extends State<AudioPage> {
               child:
           AppBar(
             leading: IconButton(
-                onPressed: (){},
+                onPressed: ()=>Navigator.of(context).pop(),
                 icon: Icon(Icons.arrow_back_ios)),
             actions: [
               IconButton(
@@ -68,15 +70,16 @@ class _AudioPageState extends State<AudioPage> {
                     SizedBox(
                       height: screenHeight*0.1,
                     ),
-                    Text("Music 1",style: TextStyle(
+                    Text(this.widget.musicData[this.widget.index]["title"],style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                       fontFamily: "monoscope"
                     ),),
-                    Text("AR Rahaman",style: TextStyle(
+                    Text(this.widget.musicData[this.widget.index]["text"],style: TextStyle(
                       fontSize: 15,
                     ),),
-                    AudioFile(audioPlayer:audioPlayer)
+                    AudioFile(audioPlayer:audioPlayer,
+                        audioPath:this.widget.musicData[this.widget.index]["audio"])
                   ],
                 ),
               )),
@@ -99,7 +102,7 @@ class _AudioPageState extends State<AudioPage> {
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white,width: 5),
                       image: DecorationImage(
-                        image: AssetImage("assets/imgs/arr-1.png"),
+                        image: AssetImage(this.widget.musicData[this.widget.index]["img"]),
                         fit: BoxFit.cover
                       )
                     ),
